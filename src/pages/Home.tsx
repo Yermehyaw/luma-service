@@ -82,7 +82,7 @@ export default function Home() {
               </motion.h1>
               <motion.p variants={fadeUp} initial="hidden" animate="show" custom={2}
                 className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/65 sm:text-lg">
-                LUMA gives every bank, school and civic office an integrated customer service and timed-ticket system — The social handles are in one-place, customers arrive exactly when
+                LUMA gives every institution and business or SME an integrated customer service delivery system — The social handles are in one-place, customers arrive exactly when
                 they should, documents verified from home. Plus branch collaboration and social care, built in.
               </motion.p>
               <motion.div variants={fadeUp} initial="hidden" animate="show" custom={3} className="mt-8 flex flex-wrap gap-3">
