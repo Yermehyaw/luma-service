@@ -2,7 +2,9 @@
 
 **Customer Service for the Digital Economy**
 
-Luma is an online customer delivery and intelligence platform designed to connect the customer journey with internal operations of a company. It utilizes social media, smart queues, online payments, document verification, and collaboration across teams. The core philosophy of Luma is that customer service should not be a series of disconnected hurdles and disatisying steps.
+Luma is an online customer service delivery and intelligence platform designed to satisfy the customer with ease and allow businesses to serve them better by connecting them with the neccessary services rendered by the company's internal operations. Made thoughfully for businessses seeking to exploit the creator economy and get a space in the ranks of excellent customer service delivery. It includes social media management for growth hacking, smart queues and bookings, fast online payments, at-home document verification, and business-referrals of customers for collaboration across teams. The core philosophy of Luma is that customer service should not be a series of disconnected hurdles and disatisying steps.
+
+In short, Luma is their superpower for seamless customer service in the digital-creator economy.
 
 ---
 
@@ -28,14 +30,14 @@ The product utilizes a SaaS B2B2C model structured to capture value across all m
 *   **Custom Landing Page:** A free, branded customer-facing page on a Luma subdomain (`business.luma.com`).
 *   **Smart Queue & Booking (Lite):** Basic digital appointments and queue management.
 *   **Payments Integration:** Access to ALATPay processing (Luma takes a micro-transaction fee).
-*   **Social Studio (Lite):** Centralized inbox with basic sentiment flagging.
+*   **Social Studio (Lite):** Centralized inbox with basic sentiment flagging and free daily content-idea generation credits.
 *   **Intelligence Dashboard (Lite):** Basic daily traffic and revenue metrics.
 *   *Note: BranchConnect and Document Verification are locked.*
 
 ### 2. Pro Tier (Growth - Ideal for Multi-branch Businesses)
 **Target:** Regional hospital networks, retail chains, and medium-sized agencies.
 *   **Everything in Basic, plus:**
-*   **Social Studio (Pro):** AI-generated reply suggestions and automated intent categorization using lightweight HuggingFace models.
+*   **Social Studio (Pro):** Extra content generation credits, AI-generated reply suggestions and automated intent categorization using lightweight HuggingFace models.
 *   **Advanced Smart Queue:** Real-time WebSocket updates, wait-time forecasting, and accessibility priority lanes.
 *   **BranchConnect:** Unlocks the internal collaboration feed for staff across different locations to share strategies.
 *   **Intelligence Dashboard (Pro):** Cross-branch analytics, staff performance metrics, and NLP-extracted customer complaint trends.
@@ -68,7 +70,7 @@ The product utilizes a SaaS B2B2C model structured to capture value across all m
 Experiences in many institutions and businesses––especially "legacy" institutions like schools, banks, hospitals and large cooperations—are heavily fragmented. Such fragmentation is seen in:
 - *Customers* wasting hours in physical waiting rooms and ranting online, discovering missing document requirements only after reaching a teller, and repeating the same complaints over and over across disjointed social media channels.
 - *Staff* are overwhelmed by manual processeses, unstructured social media outrage, and lack of visibility into daily loads.
-- *Management/Branches* operate in silos. If Branch A solves a severe operational bottleneck, Branch B never learns about it, leading to duplicated efforts and wasted resources.
+- *Management/Branches* operate in silos. If Branch A solves a severe operational bottleneck, Branch B never learns about it, leading to duplicated efforts and wasted resources and if a branch cant handle the needs of the customer there is a broken and usually uncoordeinated customer referral system.
 
 Due to this customers often find themselves waiting in physical queues, unable to book services or appointments, discover document problems only after reaching a service delivery centre, make payments through separate channels, and repeatedly ask the same questions on social media. Meanwhile, different branches independently solve the same operational problems without sharing knowledge. 
 
