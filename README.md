@@ -1,57 +1,60 @@
 # Luma
+
 **Customer Service for the Digital Economy**
 
-Luma is an online customer delivery and intelligence platform designed to connect the customer journey with internal operations of a company. It utilizes social media, smart queues, online payments, document verification, and collaboration across teams.
+Luma is an online customer delivery and intelligence platform designed to connect the customer journey with internal operations of a company. It utilizes social media, smart queues, online payments, document verification, and collaboration across teams. 
 
-By saving the customer's time and energy while returning insights and customer approval, Luma allows for 24-hour round-the-clock service delivery.
+---
 
-Built by **Team Luma** for the **Hackaholics (Wema Bank)** hackathon.
+## Terminology (Clarification of Key Terms)
+To ensure seamless collaboration and understanding across the project, we adhere to the following definitions:
 
-## The Problem
-Experiences in many institutions—especially "legacy" institutions like schools, banks, and hospitals—are heavily fragmented. Customers often wait in physical queues, discover document problems only after reaching a branch, make payments through separate channels, and repeatedly ask the same questions on social media. Meanwhile, different branches independently solve the same operational problems without sharing knowledge.
+*   **Luma:** The name of this platform/product.
+*   **Businesses (or Tenants):** These are *our* direct clients (e.g., Banks, Hospitals, Universities) who purchase Luma either via the SaaS tier or Enterprise model.
+*   **Customers (or End-Users):** These are the clients of the *Businesses* (e.g., the bank account holder, the student, the patient) who interact with Luma's booking portals, digital tickets, and document verification flows.
+*   **Staff:** Employees of the *Businesses* who use the Luma Ops Console, BranchConnect, or Social Studio to serve *Customers*.
+*   **Management / Admin:** High-level executives of the *Businesses* who use the Luma Intelligence Dashboard to monitor metrics across all their branches.
 
-## The Solution: One Connected Customer Service Delivery Experience
-Luma brings these fragmented processes together into one cohesive ecosystem. Though the application provides specialized views depending on the user's role (Customer vs. Staff/Management), it functions as a single, connected product.
+---
 
-### The Core Modules
-1. **Social Studio:** A social media management dashboard tied to an AI service for analytics, content idea generation, and helping social media managers quickly resolve customer complaints. It monitors customer questions, sentiment, and trends, translating conversations into actionable insights.
-2. **Smart Queue:** Allows customers to select institutions, services, and branches, book convenient slots, and track their digital queue tickets with live estimated waiting times—reducing unnecessary physical waiting.
-3. **Document Verification:** Customers can upload required documents (IDs, transcripts, etc.) from home. The system provides immediate visual status (Verified, Processing, Action Required, Rejected) using AI/OCR for preliminary verification.
-4. **Payments:** Integrated payments using Wema Bank's ALATPay API. Customers can securely pay processing fees during their journey (e.g., when uploading documents) and receive immediate confirmation linked to their service.
-5. **Branch Connect:** An internal collaboration platform where branch staff and teams share successful strategies, challenges, customer trends, and solutions, ensuring no branch has to solve an operational problem from scratch.
-6. **Luma Intelligence Dashboard:** A management command center that aggregates data across all modules—showing active queues, wait times, document verification statuses, service demands, and cross-branch insights.
+## Project Architecture
 
-## User Roles
-Luma provides tailored experiences for three key roles:
+Luma is built on a scalable, modern Monorepo architecture designed for multi-tenancy, data privacy, and AI integration.
 
-- **Customer:** Queue booking, tracking, document uploads, payments, and feedback submission.
-- **Company Staff/Social Media Manager:** Social Studio monitoring, live queue management, customer request handling, document review, and Branch Connect collaboration.
-- **Management/Admin:** Intelligence dashboard analytics, branch performance tracking, and cross-branch insights.
+The repository is split into two primary ecosystems:
 
-## Customer Journey Example (Business Account Opening)
-1. Customer selects "Business Account Opening" and chooses a branch.
-2. Books a queue/appointment slot.
-3. Uploads required documents and tracks verification status.
-4. Pays required processing fees via the integrated ALATPay modal.
-5. Receives confirmation and visits the branch when notified.
-6. Submits feedback upon completion.
-7. Internal systems analyze feedback; Social Studio identifies trends (e.g., document confusion) and suggests an FAQ campaign; Branch Connect shares a previously successful solution from another branch, ultimately reflecting improved metrics on the Intelligence Dashboard.
+### 1. Frontend: Next.js (App Router)
+Located in the `frontend/` directory, this is the client-facing application.
+*   **Framework:** Next.js (React) using the modern App Router.
+*   **Styling:** Tailwind CSS + shadcn/ui.
+*   **Architecture:** Feature-Sliced Design. Business logic is isolated in `src/features/`, while `src/app/` solely handles routing.
+*   **Multi-Tenancy:** Next.js Edge Middleware handles custom subdomain routing (e.g., routing `acme-bank.luma.com` to the correct internal tenant views) while maintaining a single, DRY codebase.
 
-## Technical Stack
-- **Frontend:** React, TypeScript, Vite, Tailwind CSS
-- **Animations:** Framer Motion
-- **Icons:** Lucide React
-- **Architecture:** Component-based frontend, mock data structures ready for API/PostgreSQL integration.
+### 2. Backend: FastAPI + PostgreSQL
+Located in the `backend/` directory, this serves as the powerful API and AI engine.
+*   **Framework:** FastAPI (Python). Chosen for native AI integration, high performance (async), and automatic OpenAPI documentation.
+*   **Database:** PostgreSQL (using SQLAlchemy/SQLModel). Enforces strict relational integrity and multi-tenancy (via Tenant IDs and Row-Level Security).
+*   **Real-time:** Redis is used for WebSocket Pub/Sub to power live queue updates.
+*   **AI Strategy:** HuggingFace `transformers` for local, lightweight Natural Language Processing (Sentiment Analysis, Intent Classification), ensuring data privacy for institutional clients.
 
-## How to Run
+---
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-2. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
+## Directory Structure
 
-Navigate to the local URL (usually `http://localhost:5173/`) in your browser to interact with the prototype.
+```text
+luma_2.0/
+├── frontend/               # Next.js Application
+│   ├── src/app/            # App Router (Routing & Middleware)
+│   ├── src/features/       # Domain Logic (Queue, Social Studio, Docs)
+│   └── src/components/     # Shared UI Components
+│
+├── backend/                # FastAPI Application
+│   ├── app/
+│   │   ├── main.py         # Application Entrypoint
+│   │   ├── routers/        # API Endpoints
+│   │   ├── models/         # Database Models & Pydantic Schemas
+│   │   └── core/           # Security, Config, AI pipelines
+│   └── requirements.txt
+│
+└── frontend_old/           # Legacy React Prototype (For Reference)
+```
