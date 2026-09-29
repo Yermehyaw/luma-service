@@ -1,25 +1,25 @@
-# LUMA
+# LUNA
 
 **Customer Service for the Digital Economy**
 
 
-LUMA is an online customer service delivery and intelligence platform designed to satisfy the customer with ease and allow businesses to serve them better by connecting them with the neccessary services rendered by the company's internal operations. Made thoughfully for businessses seeking to exploit the creator economy and get a space in the ranks of excellent customer service delivery. It includes social media management for growth hacking, smart queues and bookings, fast online payments, at-home document verification, and business-referrals of customers for collaboration across teams. The core philosophy of LUMA is that customer service should not be a series of disconnected hurdles and disatisying steps.
+LUNA is an online customer service delivery and intelligence platform designed to satisfy the customer with ease and allow businesses to serve them better by connecting them with the neccessary services rendered by the company's internal operations. Made thoughfully for businessses seeking to exploit the creator economy and get a space in the ranks of excellent customer service delivery. It includes social media management for growth hacking, smart queues and bookings, fast online payments, at-home document verification, and business-referrals of customers for collaboration across teams. The core philosophy of LUNA is that customer service should not be a series of disconnected hurdles and disatisying steps.
 
-In short, LUMA is your business superpower for seamless customer service in the digital-creator economy.
+In short, LUNA is your business superpower for seamless customer service in the digital-creator economy.
 
 ---
 
 ## Terminologies (Clarification of Key Terms)
 To ensure seamless collaboration and understanding across the project, we adhere to the following definitions:
 
-*   **LUMA:** The name of this platform/product.
-*   **Businesses (or Tenants):** These are *our* direct clients (e.g., service-provision businesses, small businesses, comapanies, banks, hospitals, universities etc) who purchase LUMA either via the SaaS tier or Enterprise model.
-*   **Customers (or End-Users):** These are the clients of the *Businesses* (e.g., the bank account holder, the student, the patient) who interact with the businesses' booking portals, digital tickets, and document verification flows via the custom LUMA customer service delivery pages.
-*   **Staff/Social Media Manager:** Employee(s) of the *Businesses* who use the LUMA Ops Console, BranchConnect, or Social Studio to serve *Customers*.
-*   **Management / Admin:** High-level executives of the *Businesses* who use the LUMA Intelligence Dashboard to monitor metrics across all their branches.
+*   **LUNA:** The name of this platform/product.
+*   **Businesses (or Tenants):** These are *our* direct clients (e.g., service-provision businesses, small businesses, comapanies, banks, hospitals, universities etc) who purchase LUNA either via the SaaS tier or Enterprise model.
+*   **Customers (or End-Users):** These are the clients of the *Businesses* (e.g., the bank account holder, the student, the patient) who interact with the businesses' booking portals, digital tickets, and document verification flows via the custom LUNA customer service delivery pages.
+*   **Staff/Social Media Manager:** Employee(s) of the *Businesses* who use the LUNA Ops Console, BranchConnect, or Social Studio to serve *Customers*.
+*   **Management / Admin:** High-level executives of the *Businesses* who use the LUNA Intelligence Dashboard to monitor metrics across all their branches.
 * **Branch/Service Delivery Centre:** The bussiness location owned.
 
-By saving the customer's time and energy while returning insights and customer delightsome-ness, LUMA allows for 24-hour round-the-clock and personal/tailored service delivery.
+By saving the customer's time and energy while returning insights and customer delightsome-ness, LUNA allows for 24-hour round-the-clock and personal/tailored service delivery.
 
 
 ## Service Delivery / Business Model Tiers
@@ -27,9 +27,9 @@ The product utilizes a SaaS B2B2C model structured to capture value across all m
 
 ### 1. Basic Tier (Freemium - Ideal for SMEs & Local Shops)
 **Target:** Local clinics, salons, bakeries, and small service providers.
-*   **Custom Landing Page:** A free, branded customer-facing page on a LUMA subdomain (`business.luma.com`).
+*   **Custom Landing Page:** A free, branded customer-facing page on a LUNA subdomain (`business.luna.com`).
 *   **Smart Queue & Booking (Lite):** Basic digital appointments and queue management.
-*   **Payments Integration:** Access to ALATPay processing (LUMA takes a micro-transaction fee).
+*   **Payments Integration:** Access to ALATPay processing (LUNA takes a micro-transaction fee).
 *   **Social Studio (Lite):** Centralized inbox with basic sentiment flagging and free daily content-idea generation credits (More credits can be purchased or upgrde to a higher tier)
 *   **Intelligence Dashboard (Lite):** Basic daily traffic and revenue metrics.
 *   *Note: BranchConnect and Document Verification are locked behind a paywall*
@@ -46,11 +46,11 @@ The product utilizes a SaaS B2B2C model structured to capture value across all m
 **Target:** Commercial banks, federal universities, and government parastatals.
 *   **Everything in Pro, plus:**
 *   **Document Pre-Clearance (Full Module):** Allows customers to upload IDs/transcripts for AI OCR and staff verification prior to physical visits.
-*   **White-labeling & API Access:** Custom domain integration and API access to embed LUMA into their existing native mobile apps.
+*   **White-labeling & API Access:** Custom domain integration and API access to embed LUNA into their existing native mobile apps.
 *   **Dedicated Infrastructure:** Enhanced data privacy, local deployment options, and dedicated account management.
 
 ## User Roles & The Flow
-* Businesses (Our Clients): The institutions purchasing the LUMA SaaS/Enterprise tier.
+* Businesses (Our Clients): The institutions purchasing the LUNA SaaS/Enterprise tier.
 
 * Customers (End-Users): Clients of the businesses.
   * The Flow: Customer selects a service (e.g., Business Account Opening) → Books a timed slot → Uploads required docs for pre-verification (if any) → Pays fees digitally → Tracks live queue time → Arrives exactly when called → Leaves feedback.
@@ -75,9 +75,9 @@ Experiences in many institutions and businesses––especially "legacy" institu
 Due to this customers often find themselves waiting in physical queues, unable to book services or appointments, discover document problems only after reaching a service delivery centre, make payments through separate channels, and repeatedly ask the same questions on social media. Meanwhile, different branches independently solve the same operational problems without sharing knowledge. 
 
 ### The Solution: One Connected Customer Service Delivery Experience
-Technically, LUMA is a B2B2C multi-tenant SaaS platform that merges the entire customer journey of a business into a single, seamless digital ecosystem. It eliminates physical waiting rooms and broken booking services through smart queuing/booking, pre-clears documents (if any), integrates payments, and uses localized AI (HuggingFace mini-models) to turn customer interactions into intelligent, cross-branch and inter-team collaboration (especially for operational improvements) allowing businesses and organisations to deliver tailored and personalized customer service in the creator/digital economy. By provising one seamless interconnected site accssible by customers, customers can get served quickly and easily as  possible as near as the browser to as far as their social media feed. 
+Technically, LUNA is a B2B2C multi-tenant SaaS platform that merges the entire customer journey of a business into a single, seamless digital ecosystem. It eliminates physical waiting rooms and broken booking services through smart queuing/booking, pre-clears documents (if any), integrates payments, and uses localized AI (HuggingFace mini-models) to turn customer interactions into intelligent, cross-branch and inter-team collaboration (especially for operational improvements) allowing businesses and organisations to deliver tailored and personalized customer service in the creator/digital economy. By provising one seamless interconnected site accssible by customers, customers can get served quickly and easily as  possible as near as the browser to as far as their social media feed. 
 
-It  unifies pre-arrival logistics (booking, docs, payments) with post-arrival execution and staff intelligence, LUMA transforms fragmented customer friction into actionable operational insights.
+It  unifies pre-arrival logistics (booking, docs, payments) with post-arrival execution and staff intelligence, LUNA transforms fragmented customer friction into actionable operational insights.
 
 
 #### The 6 Core Modules
@@ -86,7 +86,7 @@ It  unifies pre-arrival logistics (booking, docs, payments) with post-arrival ex
 3. **Document Verification:** A pre-clearance portal where customers can upload required documents (IDs, transcripts, etc.) from home allowing staff (or simulated AI OCR) to flag issues before the customer ever visits the branch. The system provides immediate visual status (Verified, Processing, Action Required, Rejected) using the AI/OCR for preliminary verification.   
 4. **Payments:** Deeply integrated financial routing (via ALATPay) so customers pay service fees upfront, linking the transaction directly to their queue/booking ticket.
 5. **Branch Connect:** An internal collaboration feed where branch staff and teams share successful strategies, challenges, playbooks, fraud alerts, customer trends, and solutions, ensuring no branch has to solve an operational problem from scratch nor repeat one another's mistakes.
-6. **LUMA Intelligence Dashboard:** A management command center that aggregates data across all modules—showing active queues, service demands, wait times, customer satisfaction trends, document verification statuses, and cross-branch analytics.
+6. **LUNA Intelligence Dashboard:** A management command center that aggregates data across all modules—showing active queues, service demands, wait times, customer satisfaction trends, document verification statuses, and cross-branch analytics.
 
 
 
@@ -94,7 +94,7 @@ It  unifies pre-arrival logistics (booking, docs, payments) with post-arrival ex
 
 ## Project Architecture
 
-LUMA is built on a scalable, modern Monorepo architecture designed for multi-tenancy, data privacy, and AI integration.
+LUNA is built on a scalable, modern Monorepo architecture designed for multi-tenancy, data privacy, and AI integration.
 
 The repository is split into two primary ecosystems:
 
@@ -103,7 +103,7 @@ Located in the `frontend/` directory, this is the client-facing application.
 *   **Framework:** Next.js (React) using the modern App Router.
 *   **Styling:** Tailwind CSS + shadcn/ui.
 *   **Architecture:** Feature-Sliced Design. Business logic is isolated in `src/features/`, while `src/app/` solely handles routing.
-*   **Multi-Tenancy:** Next.js Edge Middleware handles custom subdomain routing (e.g., routing `acme-bank.LUMA.com` to the correct internal tenant views) while maintaining a single, DRY codebase.
+*   **Multi-Tenancy:** Next.js Edge Middleware handles custom subdomain routing (e.g., routing `acme-bank.LUNA.com` to the correct internal tenant views) while maintaining a single, DRY codebase.
 
 ### 2. Backend: FastAPI + PostgreSQL
 Located in the `backend/` directory, this serves as the powerful API and AI engine.
@@ -117,7 +117,7 @@ Located in the `backend/` directory, this serves as the powerful API and AI engi
 ## Directory Structure
 
 ```text
-LUMA_2.0/
+LUNA_2.0/
 ├── frontend/               # Next.js Application
 │   ├── src/app/            # App Router (Routing & Middleware)
 │   ├── src/features/       # Domain Logic (Queue, Social Studio, Docs)
@@ -139,4 +139,4 @@ LUMA_2.0/
 └── frontend_old/           # Legacy React Prototype (For Reference)
 ```
 
-Built by **Team LUMA** for the **Hackaholics (Wema Bank)** hackathon.
+Built by **Team LUNA** for the **Hackaholics (Wema Bank)** hackathon.
