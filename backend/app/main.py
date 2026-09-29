@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers import queue
 
 app = FastAPI(
-    title="Luma API",
-    description="Backend API for the Luma Multi-Tenant Platform",
+    title="Luna API",
+    description="Backend API for the Luna Multi-Tenant Platform",
     version="1.0.0"
 )
 
@@ -15,9 +16,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(queue.router)
+
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the Luma API"}
+    return {"message": "Welcome to the Luna API"}
 
 @app.get("/health")
 async def health_check():

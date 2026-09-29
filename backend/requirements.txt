@@ -8,3 +8,5 @@ redis
 transformers
 scikit-learn
 torch
+asyncpg
+alembic
