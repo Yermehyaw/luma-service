@@ -117,7 +117,7 @@ Located in the `backend/` directory, this serves as the powerful API and AI engi
 ## Directory Structure
 
 ```text
-LUNA_2.0/
+LUNA/
 ├── frontend/               # Next.js Application
 │   ├── src/app/            # App Router (Routing & Middleware)
 │   ├── src/features/       # Domain Logic (Queue, Social Studio, Docs)
