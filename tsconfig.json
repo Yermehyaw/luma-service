@@ -39,7 +39,6 @@
     "node_modules",
     "legacy",
     "frontend_old",
-    "agon-agent_1-470a0cd1",
     "api",
     "vite.config.ts"
   ]
