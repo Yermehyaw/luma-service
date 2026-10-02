@@ -455,71 +455,204 @@ confirmed `called → booked` is rejected with a 409, and confirmed a different
 
 ### What I need to answer before Phase 3
 
-Both of these are above in detail, and neither is blocking anything I can build today:
+Both are expanded in §10 with the rest, and neither blocks work I can start today —
+the realtime queue is independent of both.
 
-1. **Where does the account wall go** — before payments, after, or split by service.
-   Section 10. My read is before, with the reasoning written out.
-2. **Is Clerk provisioned** — a real instance with keys, a stub with a local signing
+1. **Q1 — Where does the account wall goes:** before payments, after, or split by
+   service. Full write-up in §10.1. My read is before.
+2. **Q2 — Is Clerk provisioned:** a real instance with keys, a stub with a local signing
    key, or code-now-verify-later. This decides whether the cross-tenant isolation
    tests can actually run.
 
 ---
 
-## 10. Still open
+## 10. Every question I have
 
-Smaller than it was, and none of these block the next piece of work:
+Consolidated so nothing gets lost. Grouped by what each one blocks. `BLOCKING` means I
+can't start that work without an answer; `SHAPING` means I can start and it'll be
+cheaper to get right first.
 
-- **Ticket number prefix** — resolved in the model's favour. `Business.ticket_prefix`
-  is a column defaulting to `LM`, so a business can use its own initials without a
-  code change. Already working; the seeded test business uses `AC` and `SM`.
-- **Social platforms for the demo** — which handles does the demo business actually
-  connect? Twitter/X and Instagram are the obvious pair. Affects how much of the
-  publishing path is real API integration vs. simulated. **This is the one I'd like an
-  answer to before starting Social Studio**, because the `SocialPlatform` enum and the
-  credential storage both follow from it.
-- **Wait-time accuracy** — see above. Target SLA or computed estimate? I lean toward
-  computing it and labelling it an estimate, because a promise we can't measure is a
-  support ticket generator.
-- **Clerk instance** — is it provisioned, or do I build against a stub and wire the real
-  keys later? Doesn't change the design, changes whether Phase 3 is verifiable.
-  Ansee skipped this for now, so Phase 3 auth is on hold until there's a call.
-### Where the account wall goes — needs a decision before Phase 3
+### Phase 3 — auth (BLOCKING)
 
-Ansee confirmed accounts are required, but left the placement open ("probably before
-or after payments"). It changes what I build, so I'm writing out the three options
-rather than picking one silently.
+**Q1. Where does the account wall go?** before payments, after payments, or split by
+service. Full write-up of the three options is in §10.1 below. My read is *before
+payments*.
 
-**Context that should inform the call.** The customer flow is: pick a service → book a
-timed slot → upload docs → pay → track queue → get called → leave feedback. Signup
-happens on the business' subdomain, not the LUNA landing page. So the wall lands inside
-a branded, already-trusted page, which is the friendly case — but the placement still
-decides how much of the funnel is walkable.
+**Q2. Is Clerk provisioned?** Real instance with keys, a stub signed with a local key,
+or code-now-verify-later. The design is identical either way. What changes is whether
+I can run the cross-tenant isolation tests for real, which is the entire point of the
+phase. *(Ansee skipped this one, so auth is parked.)*
 
-**Option A — wall before payments.** Booking completes with an account; payment comes
-after. Cost: someone can invest five minutes in booking, then hit the wall. Benefit: no
-one enters money and *then* discovers they need an account, which is the failure mode
-that actually generates complaints.
+**Q3. Staff, customer, and management — one Clerk instance or separate?** The README
+treats them as three distinct roles and we agreed staff and customers come through
+different doors. Clerk supports multiple apps on one instance, so I'd default to that
+unless you want harder separation. Affects token structure and the `get_current_user`
+dependency shape.
 
-**Option B — wall after payments.** Booking and payment both complete, account required
-to finish. Cost: highest risk. Someone pays, then hits a wall, and now it's a
-support ticket about money. Benefit: nothing else in the flow is gated, so it feels
-least intrusive.
+**Q4. How does a business's staff get attached to a tenant?** Clerk gives us an
+authenticated staff identity, but nothing ties it to a `business_id` without either
+(a) an invitation/join table mapping Clerk users to businesses and roles, or (b)
+encoding the tenant in Clerk's `publicMetadata` at signup. (b) is less code and trusts
+Clerk to be the source of truth; (a) is auditable and survives someone leaving the
+company. I'd lean (a) — a staff membership table — because Enterprise clients will ask
+who had access to what.
 
-**Option C — split by service.** Booking completes unauthenticated; only services with
-`requires_payment=True` need an account. Matches the data model we already built
-(`Service.requires_payment`), so it falls out naturally. Cost: two paths to build and
-test, and a non-paying service still creates a `Ticket` with no `customer_id`, which
-weakens the "a ticket belongs to somebody" property Phase 1 just established.
+### Payments (SHAPING, BLOCKING the payment work)
 
-**My read:** A. The queue is the product's core promise, and a customer who books a slot
+**Q5. Do we have ALATPay sandbox credentials?** Without them I build against a fake
+provider interface and can't demo a real transaction.
+
+**Q6. Webhook or polling?** ALATPay calls us back on payment completion, or we poll
+their status endpoint. Webhook is the right answer but needs a public URL, which is a
+deployment question (see Q14). If we're demoing locally, polling is simpler.
+
+**Q7. Does anything monetise the booking itself, or only the service?** This is the
+fact that settles Q1. If businesses charge per booking, the split-by-service option
+becomes much more attractive.
+
+**Q8. Is there a cancellation/refund flow, or is it pay-and-done for the MVP?**
+`PaymentStatus` already has a `refunded` value but nothing produces it. I'd defer
+refunds — they're a whole module and not on the demo path.
+
+### Smart Queue realtime (SHAPING)
+
+**Q9. What actually calls a ticket?** The Pro tier promises live updates and the
+wait-time forecasting, but calling someone is a human action. Is there a teller
+console in the demo where staff click "call next", or should something auto-advance
+the queue? This changes the WebSocket payload design substantially.
+
+**Q10. Is Redis available in the demo environment?** `REDIS_URL` is configured but I
+haven't verified a running instance. If Redis isn't there, the fallback is in-process
+pub/sub, which breaks the moment we run two workers — fine for a demo, wrong for
+production.
+
+**Q11. Do WebSockets authenticate with the same Clerk token as HTTP?** I'd assume yes,
+so the tenant comes from the verified identity rather than a query string. Worth
+confirming because if the queue page is viewable *before* signup (which Q1 suggests it
+should be), we need a public-by-ticket-number channel that resolves the tenant from
+the ticket itself rather than from a token. That's a meaningfully different auth path
+from the staff console.
+
+**Q11b. Is the "11 minutes" a number we promise or a number we compute?** §5.4 commits
+us to 11 minutes of service delivery. `format_countdown` currently returns "About 15
+min" — a real estimate derived from tickets ahead times service duration, not a
+measured average. It will drift from reality on a busy day. So: do we display the
+computed estimate and accept the drift, or display the promised 11 and calibrate the
+estimate against historical throughput? I'd compute it and label it an estimate,
+because a promise we can't measure is a support ticket generator. This is the one
+question here that affects an existing, already-working endpoint.
+
+### Social Studio (SHAPING, BLOCKING this work)
+
+**Q12. Which platforms does the demo business connect?** Twitter/X and Instagram are
+the obvious pair. The `SocialPlatform` enum and the credential storage model both
+follow from this.
+
+**Q13. Real API integration, or simulated publishing?** Real means OAuth apps, rate
+limit handling, token refresh, and platform review before the API keys work. Simulated
+means the flow is fully demonstrable but nothing actually posts. For a hackathon
+demo, simulated-but-honest is usually the right trade, but it's your call and it
+changes how much of this is buildable in the time we have.
+
+**Q14. Where does trend data come from?** The README promises trend surfacing. That
+needs either platform trend APIs (limited and often gated), third-party services, or
+scrape-based approaches I'd rather not build. The cheapest honest version is surfacing
+trends from data the business already generates — their own post performance and
+inbound query themes — rather than industry-wide trends.
+
+**Q15. Growth analytics — what metrics matter for the demo?** Reach, impressions,
+engagement rate, follower movement? I have `follower_count` on the account and
+`external_post_id` on the publish target, so the storage is there. Which of these the
+Intelligence Dashboard shows in the demo is a product call.
+
+### Document Verification (SHAPING)
+
+**Q16. Where do uploads go?** S3-compatible storage, or local disk for the MVP? The
+Enterprise tier promises local deployment and enhanced data privacy, which argues
+against hardcoding S3. I'd build a storage interface with a local-disk implementation
+and leave the S3 one for later.
+
+**Q17. Real OCR or simulated?** Same trade as Q13. Real OCR on Nigerian IDs is worth
+demoing if the libraries behave, but a simulated pass/fail path is far more reliable in
+a live demo.
+
+### Cross-cutting (SHAPING)
+
+**Q18. How do tiers get enforced in the API?** The README has Basic/Pro/Enterprise with
+real feature gates — BranchConnect and Document Verification are paywalled, Social
+Studio has credit limits. Is there a subscription table and a feature-flag check in the
+request path, or is tier gating a frontend concern for the MVP? If it's backend, I
+need to model subscriptions and it's a dependency for several modules.
+
+**Q19. How is the accessibility priority lane set?** The Pro tier promises it. Customer
+self-declares at booking, or staff override? A self-declared lane that anyone can pick
+isn't a priority lane, so if it's self-service it needs some verification story.
+
+**Q20. Is "leave feedback" in scope now?** It's the last step of the customer flow in
+the README. There's no model for it. Cheap to add, but it's another endpoint and
+schema.
+
+**Q21. SMS/WhatsApp notifications?** The README says Smart Queue "also plans to
+support" them. In scope for the demo or genuinely future? These need a provider
+(Twilio, Africa's Talking, Meta WhatsApp Business API) and cost money per message,
+which is a real decision for a student project.
+
+**Q22. Frontend contract — is anything already built against these endpoints?** You
+said we own the API calls, so I'm not going to negotiate endpoints. But if the
+frontend has already guessed at shapes, I'd rather match what they've written than
+have them redo it. A URL or a fetch call from their side is enough.
+
+**Q23. What origins does CORS need for the demo?** Currently `localhost:3000` and
+`127.0.0.1:3000`. The middleware handles custom subdomains per the README, so if the
+demo runs on something like `acme.luna.test`, that needs adding.
+
+### Infrastructure (SHAPING)
+
+**Q24. Where does this actually get deployed?** Affects Q6 (webhooks need a public URL)
+and whether the asyncpg pool settings and CORS list are configured sensibly. Railway,
+Render, Fly, or a VPS? Or is this demoed from a laptop on a LAN?
+
+**Q25. Do you want a seed script for the demo?** A command that creates a realistic
+business with branches, services, staff, customers and some history would make the
+demo far faster to set up than clicking through forms. I've been seeding by hand in
+tests and it's tedious. Cheap to build, high demo value.
+
+**Q26. Rate limiting — before or after the demo?** It's Phase 5 in the plan, but an
+unauthenticated booking endpoint is exactly the thing that gets hammered. Flagging it
+so it's a decision rather than an oversight.
+
+### §10.1 — The account wall, in full
+
+Ansee confirmed accounts are required, but left placement open ("probably before or
+after payments"). It changes what I build, so here are all three.
+
+**Context.** The flow is: pick a service → book a timed slot → upload docs → pay →
+track queue → get called → leave feedback. Signup happens on the business' subdomain,
+not the LUNA landing page, so the wall lands inside an already-brusted page. That's the
+friendly case, but placement still decides how much of the funnel is walkable.
+
+**A — wall before payments.** Booking completes with an account, payment follows. Cost:
+someone invests five minutes booking, then hits the wall. Benefit: nobody enters money
+and *then* discovers they need an account, which is the failure mode that actually
+generates complaints.
+
+**B — wall after payments.** Booking and payment both complete, account required to
+finish. Cost: highest risk — they pay, hit a wall, and now it's a support ticket about
+money. Benefit: nothing else is gated, so it feels least intrusive.
+
+**C — split by service.** Free bookings complete unauthenticated; only services with
+`requires_payment=True` need an account. Matches `Service.requires_payment`, so it
+falls out naturally. Cost: two paths to build and test, and a non-paying service still
+creates a `Ticket` with no `customer_id`, weakening the "a ticket belongs to somebody"
+property Phase 1 just established.
+
+**My read: A.** The queue is the product's core promise, and someone who books a slot
 and gets called has already been served — gating that behind signup undermines the
-"seamless" part of the pitch. C is tempting because the model supports it, but Option A
-plus a guest-friendly browse step gets most of the same conversion without leaving
-ownerless tickets in the table.
+"seamless" half of the pitch. C is tempting because the model supports it, but A plus a
+guest-friendly browse step gets most of the same conversion without leaving ownerless
+tickets in the table.
 
-**What I'd need to know:** does anything monetise the booking itself, or only the
-service? If a business charges per booking, C gets much more attractive. If payment is
-the fee for the service, A is clearly right.
+**Settled by:** Q7 — does anything monetise the booking itself, or only the service?
 
 ---
 
