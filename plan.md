@@ -453,14 +453,15 @@ confirmed `called → booked` is rejected with a 409, and confirmed a different
 - **No Document Verification, BranchConnect, or Intelligence Dashboard.** Stubs at
   best.
 
-### Open question that affects the wait-time display
+### What I need to answer before Phase 3
 
-The `format_countdown` output currently says "About 15 min" — a computed estimate
-from tickets ahead times service duration. It is not a measured average, and it will
-drift from reality on a busy day. The open question in section 10 is whether the "11
-minutes" in the product promise is a target we display or a number we compute. If it's
-a promise, the estimate needs to be calibrated against historical throughput or the UI
-is making a claim we can't keep.
+Both of these are above in detail, and neither is blocking anything I can build today:
+
+1. **Where does the account wall go** — before payments, after, or split by service.
+   Section 10. My read is before, with the reasoning written out.
+2. **Is Clerk provisioned** — a real instance with keys, a stub with a local signing
+   key, or code-now-verify-later. This decides whether the cross-tenant isolation
+   tests can actually run.
 
 ---
 
@@ -481,10 +482,44 @@ Smaller than it was, and none of these block the next piece of work:
   support ticket generator.
 - **Clerk instance** — is it provisioned, or do I build against a stub and wire the real
   keys later? Doesn't change the design, changes whether Phase 3 is verifiable.
-- **Payments gate placement** — Ansee said the auth wall goes "prob before/after
-  payments". Which side? Before payments is friendlier and loses some conversion;
-  after payments means someone pays and then hits a wall, which is worse. I'd put it
-  before, but it's your call and it changes the order I build the payment flow.
+  Ansee skipped this for now, so Phase 3 auth is on hold until there's a call.
+### Where the account wall goes — needs a decision before Phase 3
+
+Ansee confirmed accounts are required, but left the placement open ("probably before
+or after payments"). It changes what I build, so I'm writing out the three options
+rather than picking one silently.
+
+**Context that should inform the call.** The customer flow is: pick a service → book a
+timed slot → upload docs → pay → track queue → get called → leave feedback. Signup
+happens on the business' subdomain, not the LUNA landing page. So the wall lands inside
+a branded, already-trusted page, which is the friendly case — but the placement still
+decides how much of the funnel is walkable.
+
+**Option A — wall before payments.** Booking completes with an account; payment comes
+after. Cost: someone can invest five minutes in booking, then hit the wall. Benefit: no
+one enters money and *then* discovers they need an account, which is the failure mode
+that actually generates complaints.
+
+**Option B — wall after payments.** Booking and payment both complete, account required
+to finish. Cost: highest risk. Someone pays, then hits a wall, and now it's a
+support ticket about money. Benefit: nothing else in the flow is gated, so it feels
+least intrusive.
+
+**Option C — split by service.** Booking completes unauthenticated; only services with
+`requires_payment=True` need an account. Matches the data model we already built
+(`Service.requires_payment`), so it falls out naturally. Cost: two paths to build and
+test, and a non-paying service still creates a `Ticket` with no `customer_id`, which
+weakens the "a ticket belongs to somebody" property Phase 1 just established.
+
+**My read:** A. The queue is the product's core promise, and a customer who books a slot
+and gets called has already been served — gating that behind signup undermines the
+"seamless" part of the pitch. C is tempting because the model supports it, but Option A
+plus a guest-friendly browse step gets most of the same conversion without leaving
+ownerless tickets in the table.
+
+**What I'd need to know:** does anything monetise the booking itself, or only the
+service? If a business charges per booking, C gets much more attractive. If payment is
+the fee for the service, A is clearly right.
 
 ---
 
