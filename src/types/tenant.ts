@@ -16,6 +16,13 @@ export interface TenantBranding {
   backgroundColor: string;
   textColor: string;
   fontFamily?: string;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  announcementTicker?: string;
+  ctaButtonText?: string;
+  bannerImageUrl?: string;
+  contactEmail?: string;
+  contactPhone?: string;
 }
 
 export interface TenantFeatures {
@@ -37,6 +44,7 @@ export interface Tenant {
   slug: string;
   name: string;
   domain?: string;
+  subdomain?: string;
   industry: TenantIndustry;
   tagline: string;
   description: string;
