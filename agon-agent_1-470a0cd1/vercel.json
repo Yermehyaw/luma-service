@@ -1,0 +1,11 @@
+{
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://placeholder.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "placeholder_key",
+    "VITE_SUPABASE_URL": "https://placeholder.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "placeholder_key"
+  },
+  "rewrites": [
+    { "source": "/((?!api/|assets/|img/|favicon.svg).*)", "destination": "/index.html" }
+  ]
+}
