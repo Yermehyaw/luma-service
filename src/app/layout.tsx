@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sora.variable}`}>
-      <body className="font-sans antialiased bg-slate-50 text-slate-900 selection:bg-orange-500 selection:text-white">
+    <html lang="en" className={`${inter.variable} ${sora.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased bg-slate-50 text-slate-900 selection:bg-orange-500 selection:text-white" suppressHydrationWarning>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
